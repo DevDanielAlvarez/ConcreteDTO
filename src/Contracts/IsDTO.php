@@ -60,4 +60,12 @@ interface IsDTO
    * @return static A new instance of the DTO with the updated values
    */
   public function cloneWith(array $fields): static;
+
+  /**
+   * Returns the DTO as an array, excluding specified keys.
+   *
+   * @param array $keys The property names to be excluded from the resulting array.
+   * @return array The filtered array.
+   */
+  public function except(array $keys): array;
 }
