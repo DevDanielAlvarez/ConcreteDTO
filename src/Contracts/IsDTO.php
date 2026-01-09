@@ -54,4 +54,10 @@ interface IsDTO
   public function to(DTOto $conversor): mixed;
   // ===> End Export Methods <====
 
+  /**
+   * Useful for updating specific properties while maintaining immutability
+   * @param array $values The values to be merged or updated in the new instance
+   * @return static A new instance of the DTO with the updated values
+   */
+  public function cloneWith(array $fields): static;
 }
