@@ -74,6 +74,4 @@ interface IsDTO
    * @return void
    */
   public static function validate(): void;
-
-
 }
