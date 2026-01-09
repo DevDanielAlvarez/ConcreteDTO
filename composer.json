@@ -10,10 +10,23 @@
             "Alvarez\\ConcreteDto\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "daniel",
             "email": "skyrimdaniel11@gmail.com"
         }
-    ]
+    ],
+    "require-dev": {
+        "pestphp/pest": "^4.3"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
 }
