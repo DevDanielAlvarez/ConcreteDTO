@@ -68,4 +68,12 @@ interface IsDTO
    * @return array The filtered array.
    */
   public function except(array $keys): array;
+
+  /**
+   * Validate data of DTO
+   * @return void
+   */
+  public static function validate(): void;
+
+
 }
