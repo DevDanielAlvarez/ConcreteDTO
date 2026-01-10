@@ -12,5 +12,5 @@ interface DTOFrom
      * @param mixed $dataToConvert
      * @return void
      */
-    public function handle(mixed $dataToConvert): IsDTO;
+    public static function handle(mixed $dataToConvert): IsDTO;
 }

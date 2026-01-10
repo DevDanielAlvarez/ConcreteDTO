@@ -4,5 +4,5 @@ namespace Alvarez\ConcreteDto\Contracts;
 
 interface DTOto
 {
-    public function handle(): mixed;
+    public static function handle(IsDTO $dto): mixed;
 }

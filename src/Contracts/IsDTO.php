@@ -26,6 +26,7 @@ interface IsDTO
   /**
    * Create a DTO from a custom data type
    * @param DTOFrom $dataToConvert
+   * @param mixed $dataToConvert
    * @return static
    */
   public static function from(DTOFrom $conversor, mixed $dataToConvert): static;
@@ -73,5 +74,5 @@ interface IsDTO
    * Validate data of DTO
    * @return void
    */
-  public static function validate(): void;
+  public static function validate(array $data): void;
 }
