@@ -116,4 +116,27 @@ $publicData = $user->except(['email']);
 // ['name' => 'Daniel Alvarez']
 ```
 
+## Validation
+
+Add custom validation by overriding the `validate()` method:
+
+```php
+final class UserDTO extends AbstractDTO
+{
+    public function __construct(
+        public readonly string $name,
+        public readonly string $email,
+    ) {}
+
+    public static function validate(array $data): void
+    {
+        if (!filter_var($data['email'] ?? '', FILTER_VALIDATE_EMAIL)) {
+            throw new InvalidArgumentException('Invalid email');
+        }
+    }
+}
+```
+
+Validation runs automatically when using `fromArray()`, `fromJSON()`, or `cloneWith()`.
+
 Next: dive into [Importing Data](/import) and [Exporting Data](/export).

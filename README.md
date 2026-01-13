@@ -118,6 +118,29 @@ $updated = $user->cloneWith(['email' => 'new@example.com']);
 // Original $user remains unchanged
 ```
 
+### Validation
+
+```php
+final class UserDTO extends AbstractDTO
+{
+    public function __construct(
+        public readonly string $name,
+        public readonly string $email,
+    ) {}
+
+    public static function validate(array $data): void
+    {
+        if (!filter_var($data['email'] ?? '', FILTER_VALIDATE_EMAIL)) {
+            throw new InvalidArgumentException('Invalid email format');
+        }
+    }
+}
+
+// Validation runs automatically on import
+$user = UserDTO::fromArray(['name' => 'Daniel', 'email' => 'invalid']);
+// Throws InvalidArgumentException
+```
+
 ## API Reference
 
 ### Importing Methods
@@ -142,7 +165,11 @@ $updated = $user->cloneWith(['email' => 'new@example.com']);
 |--------|---------|
 | `cloneWith(array $fields): static` | Clone with field overrides |
 | `except(array $keys): array` | Get array excluding specified fields |
+### Validation
 
+| Method | Purpose |
+|--------|---------|---|
+| `validate(array $data): void` | Override to add custom validation logic before DTO creation |
 ## Real-World Examples
 
 ### HTTP API Response

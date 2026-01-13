@@ -76,6 +76,44 @@ $legacy = new LegacyUser('Daniel Alvarez', 'alvarez@alvarez.com');
 $user = UserDTO::from(LegacyUserToDTO::class, $legacy);
 ```
 
+## Custom validation
+
+Override the `validate()` method to add custom validation logic that runs before DTO creation.
+
+```php
+<?php
+
+final class UserDTO extends AbstractDTO
+{
+    public function __construct(
+        public readonly string $name,
+        public readonly string $email,
+    ) {}
+
+    public static function validate(array $data): void
+    {
+        if (!filter_var($data['email'] ?? '', FILTER_VALIDATE_EMAIL)) {
+            throw new InvalidArgumentException('Invalid email format');
+        }
+        
+        if (strlen($data['name'] ?? '') < 2) {
+            throw new InvalidArgumentException('Name too short');
+        }
+    }
+}
+
+// Validation runs automatically
+$user = UserDTO::fromArray([
+    'name' => 'Daniel Alvarez',
+    'email' => 'alvarez@alvarez.com',
+]); // ✓ Valid
+
+$user = UserDTO::fromJSON('{"name":"A","email":"invalid"}');
+// ✗ Throws InvalidArgumentException
+```
+
+Validation applies to `fromArray()`, `fromJSON()`, and `cloneWith()` methods.
+
 With these three methods you can accept arrays, JSON payloads, or domain objects without leaking framework models into your DTOs.
 
 Next: see how to emit data with [Exporting Data](/export).
