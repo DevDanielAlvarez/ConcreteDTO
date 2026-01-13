@@ -16,6 +16,7 @@ abstract class AbstractDTO implements IsDTO
      */
     public static function fromArray(array $data): static
     {
+        self::validate($data);
         // return the children class with the converted data from array
         return new static(...$data);
     }
@@ -27,6 +28,7 @@ abstract class AbstractDTO implements IsDTO
      */
     public static function fromJSON(string $json): static
     {
+        self::validate(json_decode($json, associative: true));
         // return the children class with the converted data from json
         return new static(...json_decode(json: $json, associative: true));
     }
