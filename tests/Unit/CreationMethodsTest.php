@@ -35,11 +35,11 @@ it('can from any type', function () {
     {
         public static function handle(mixed $dataToConvert): IsDTO
         {
-            $lastName = ltrim(strrchr($dataToConvert->fullName, ' '));
-            return new UserDTO(name: $lastName);
+            $firstName = explode(' ', $dataToConvert->fullName)[0];
+            return new UserDTO(name: $firstName);
         }
     }
     $anotherDTO = new AnotherDTO(fullName: 'Daniel Alvarez');
     $userDTO = UserDTO::from(conversor: new ConvertAnotherDTOInUserDTO(), dataToConvert: $anotherDTO);
-    expect($userDTO->name)->toBe('Alvarez');
+    expect($userDTO->name)->toBe('Daniel');
 });

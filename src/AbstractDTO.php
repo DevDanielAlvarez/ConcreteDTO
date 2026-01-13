@@ -3,7 +3,7 @@
 namespace Alvarez\ConcreteDto;
 
 use Alvarez\ConcreteDto\Contracts\DTOFrom;
-use Alvarez\ConcreteDto\Contracts\DTOto;
+use Alvarez\ConcreteDto\Contracts\DTOTo;
 use Alvarez\ConcreteDto\Contracts\IsDTO;
 
 abstract class AbstractDTO implements IsDTO
@@ -68,10 +68,10 @@ abstract class AbstractDTO implements IsDTO
 
     /**
      * Conver a custom data type in a DTO
-     * @param DTOto $conversor
+     * @param DTOTo $conversor
      * @return mixed
      */
-    public function to(DTOto $conversor): mixed
+    public function to(DTOTo|string $conversor): mixed
     {
         return $conversor::handle(dto: $this);
     }

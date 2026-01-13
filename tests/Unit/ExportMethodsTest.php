@@ -1,6 +1,8 @@
 <?php
 
 use Alvarez\ConcreteDto\AbstractDTO;
+use Alvarez\ConcreteDto\Contracts\DTOTo;
+use Alvarez\ConcreteDto\Contracts\IsDTO;
 
 class PatientDTO extends AbstractDTO
 {
@@ -28,4 +30,28 @@ it('can converto a DTO to a JSON', function () {
     $json = $patientDTO->toJson();
     expect($json)->toBeJson();
     expect($json)->toBe('{"email":"alvarez@alvarez.com"}');
+});
+
+it('can convert a DTO to custom data type', function () {
+
+    class FakeModel
+    {
+        public function __construct(public readonly string $email)
+        {
+        }
+    }
+    class PatientDTOToFakeModel implements DTOTo
+    {
+        public static function handle(IsDTO $dto): mixed
+        {
+            return new FakeModel(email: $dto->email);
+        }
+    }
+
+    $patientDTO = new PatientDTO(email: 'alvarez@alvarez.com');
+
+    $fakeModel = $patientDTO->to(PatientDTOToFakeModel::class);
+
+    expect($fakeModel)->toBeInstanceOf(FakeModel::class);
+
 });

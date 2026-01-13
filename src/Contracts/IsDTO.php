@@ -49,10 +49,10 @@ interface IsDTO
 
   /**
    * Conver a custom data type in a DTO
-   * @param DTOto $conversor
+   * @param DTOTo $conversor
    * @return mixed
    */
-  public function to(DTOto $conversor): mixed;
+  public function to(DTOTo $conversor): mixed;
   // ===> End Export Methods <====
 
   /**
