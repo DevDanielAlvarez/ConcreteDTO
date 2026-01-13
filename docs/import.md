@@ -17,7 +17,7 @@ final class UserDTO extends AbstractDTO
 {
     public function __construct(
         public readonly string $name,
-        public readonly ?string $email = null,
+        public readonly string $email,
     ) {}
 }
 

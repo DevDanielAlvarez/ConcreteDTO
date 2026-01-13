@@ -24,17 +24,29 @@ final class UserDTO extends AbstractDTO
     ) {}
 }
 
-// Import
+// Import from array
 $user = UserDTO::fromArray([
     'name' => 'Daniel Alvarez',
     'email' => 'alvarez@alvarez.com',
 ]);
 
-// Export
-$payload = $user->toJson();
+// Import from JSON
+$user = UserDTO::fromJSON('{"name":"Daniel Alvarez","email":"alvarez@alvarez.com"}');
+
+// Export to array
+$data = $user->toArray();
+// ['name' => 'Daniel Alvarez', 'email' => 'alvarez@alvarez.com']
+
+// Export to JSON
+$json = $user->toJson();
+// {"name":"Daniel Alvarez","email":"alvarez@alvarez.com"}
 
 // Immutability
 $updated = $user->cloneWith(['email' => 'new@example.com']);
+
+// Filter fields
+$filtered = $user->except(['email']);
+// ['name' => 'Daniel Alvarez']
 ```
 
 ## Core methods at a glance
@@ -42,5 +54,36 @@ $updated = $user->cloneWith(['email' => 'new@example.com']);
 - `fromArray()`, `fromJSON()`, `from(DTOFrom)` for inputs
 - `toArray()`, `toJson()`, `to(DTOTo)` for outputs
 - `cloneWith()` and `except()` for immutable workflows
+
+## Quick export examples
+
+```php
+// HTTP response
+return response()->json($user->toArray());
+
+// Queue payload
+dispatch(new SendEmailJob($user->toJson()));
+
+// Export to domain model
+use Alvarez\ConcreteDto\Contracts\DTOTo;
+use Alvarez\ConcreteDto\Contracts\IsDTO;
+
+final class UserDTOToModel implements DTOTo
+{
+    public static function handle(IsDTO $dto): mixed
+    {
+        return new UserModel(
+            name: $dto->name,
+            email: $dto->email,
+        );
+    }
+}
+
+$model = $user->to(UserDTOToModel::class);
+
+// Filter sensitive data
+$publicData = $user->except(['email']);
+// ['name' => 'Daniel Alvarez']
+```
 
 Use the pages on the left for deeper guides and recipes.

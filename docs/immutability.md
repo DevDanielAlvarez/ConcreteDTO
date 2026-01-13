@@ -11,9 +11,9 @@ Create a new DTO instance by merging existing properties with the provided overr
 ```php
 <?php
 
-$original = new PatientDTO(
+$original = new UserDTO(
+    name: 'Daniel Alvarez',
     email: 'alvarez@alvarez.com',
-    birthday: '2000-01-01',
 );
 
 $updated = $original->cloneWith([
@@ -29,8 +29,8 @@ $updated = $original->cloneWith([
 Get an array of DTO data while removing sensitive or unnecessary fields.
 
 ```php
-$data = $updated->except(['birthday']);
-// ['email' => 'new@example.com']
+$data = $updated->except(['email']);
+// ['name' => 'Daniel Alvarez']
 ```
 
 Combining `cloneWith()` and `except()` keeps DTO usage predictable, even as your data requirements evolve.

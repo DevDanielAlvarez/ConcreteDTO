@@ -11,13 +11,13 @@ Returns a flat associative array based on the DTO constructor properties.
 ```php
 <?php
 
-$patient = new PatientDTO(
+$user = new UserDTO(
+    name: 'Daniel Alvarez',
     email: 'alvarez@alvarez.com',
-    birthday: '2000-01-01',
 );
 
-$array = $patient->toArray();
-// ['email' => 'alvarez@alvarez.com', 'birthday' => '2000-01-01']
+$array = $user->toArray();
+// ['name' => 'Daniel Alvarez', 'email' => 'alvarez@alvarez.com']
 ```
 
 ## `toJson(): string`
@@ -25,8 +25,8 @@ $array = $patient->toArray();
 Serializes the DTO to JSON. Useful for HTTP responses or logging.
 
 ```php
-$json = $patient->toJson();
-// {"email":"alvarez@alvarez.com","birthday":"2000-01-01"}
+$json = $user->toJson();
+// {"name":"Daniel Alvarez","email":"alvarez@alvarez.com"}
 ```
 
 ## `to(DTOTo|string $conversor): mixed`
@@ -39,16 +39,16 @@ Convert the DTO into any custom structure by implementing `DTOTo`. This keeps ma
 use Alvarez\ConcreteDto\Contracts\DTOTo;
 use Alvarez\ConcreteDto\Contracts\IsDTO;
 
-final class PatientDTOToModel implements DTOTo
+final class UserDTOToModel implements DTOTo
 {
     public static function handle(IsDTO $dto): mixed
     {
-        return new PatientModel(email: $dto->email, birthday: $dto->birthday);
+        return new UserModel(name: $dto->name, email: $dto->email);
     }
 }
 
-$patient = new PatientDTO(email: 'alvarez@alvarez.com', birthday: '2000-01-01');
-$model = $patient->to(PatientDTOToModel::class);
+$user = new UserDTO(name: 'Daniel Alvarez', email: 'alvarez@alvarez.com');
+$model = $user->to(UserDTOToModel::class);
 ```
 
 By centralizing export rules, you avoid duplicated array casts scattered across the codebase and keep changes localized to your DTOs.

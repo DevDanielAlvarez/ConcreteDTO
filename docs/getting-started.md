@@ -24,11 +24,11 @@ Extend `AbstractDTO` and keep your constructor explicit. Public promoted propert
 
 use Alvarez\ConcreteDto\AbstractDTO;
 
-final class PatientDTO extends AbstractDTO
+final class UserDTO extends AbstractDTO
 {
     public function __construct(
+        public readonly string $name,
         public readonly string $email,
-        public readonly ?string $birthday = null,
     ) {}
 }
 ```
@@ -38,17 +38,17 @@ final class PatientDTO extends AbstractDTO
 ### From an array (fastest)
 
 ```php
-$patient = PatientDTO::fromArray([
-    'email' => 'patient@example.com',
-    'birthday' => '1990-01-01',
+$user = UserDTO::fromArray([
+    'name' => 'Daniel Alvarez',
+    'email' => 'alvarez@alvarez.com',
 ]);
 ```
 
 ### From JSON
 
 ```php
-$json = '{"email":"patient@example.com"}';
-$patient = PatientDTO::fromJSON($json);
+$json = '{"name":"Daniel Alvarez","email":"alvarez@alvarez.com"}';
+$user = UserDTO::fromJSON($json);
 ```
 
 ### From any type with a converter
@@ -61,31 +61,59 @@ Implement `DTOFrom` to describe how to turn a custom object into your DTO.
 use Alvarez\ConcreteDto\Contracts\DTOFrom;
 use Alvarez\ConcreteDto\Contracts\IsDTO;
 
-final class PatientRecord
+final class UserRequest
 {
     public function __construct(
-        public readonly string $email,
-        public readonly string $dob,
+        public readonly string $fullName,
+        public readonly string $contact,
     ) {}
 }
 
-final class PatientRecordToDTO implements DTOFrom
+final class UserRequestToDTO implements DTOFrom
 {
     public static function handle(mixed $dataToConvert): IsDTO
     {
-        return new PatientDTO(
-            email: $dataToConvert->email,
-            birthday: $dataToConvert->dob,
+        return new UserDTO(
+            name: $dataToConvert->fullName,
+            email: $dataToConvert->contact,
         );
     }
 }
 
-$record = new PatientRecord('patient@example.com', '1990-01-01');
-$patient = PatientDTO::from(PatientRecordToDTO::class, $record);
+$request = new UserRequest('Daniel Alvarez', 'alvarez@alvarez.com');
+$user = UserDTO::from(UserRequestToDTO::class, $request);
 ```
 
 ## Export and update quickly
 
 Every DTO can be exported with `toArray()`, `toJson()`, or converted to another shape with `to(DTOTo::class)`. Use `cloneWith([...])` to keep immutability while changing selected fields.
+
+### Export to array
+
+```php
+$data = $user->toArray();
+// ['name' => 'Daniel Alvarez', 'email' => 'alvarez@alvarez.com']
+```
+
+### Export to JSON
+
+```php
+$json = $user->toJson();
+// {"name":"Daniel Alvarez","email":"alvarez@alvarez.com"}
+```
+
+### Update immutably
+
+```php
+$updated = $user->cloneWith(['email' => 'new@example.com']);
+// Original $user remains unchanged
+```
+
+### Filter fields
+
+```php
+$publicData = $user->except(['email']);
+// ['name' => 'Daniel Alvarez']
+```
 
 Next: dive into [Importing Data](/import) and [Exporting Data](/export).

@@ -5,6 +5,10 @@ export default defineConfig({
     description: 'A simple and explicit PHP DTO library',
     base: '/ConcreteDTO/',
     themeConfig: {
+        logo: '/logo.png',
+        search: {
+            provider: 'local'
+        },
         nav: [
             { text: 'GitHub', link: 'https://github.com/DevDanielAlvarez/ConcreteDTO' }
         ],
