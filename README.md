@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/logo.png" alt="ConcreteDTO Logo" width="120" height="160">
+<img src="assets/logo.png" alt="ConcreteDTO Logo" width="120" height="150">
 
 # ConcreteDTO
 
