@@ -1,6 +1,6 @@
 <div align="center">
 
-![ConcreteDTO Logo](assets/logo.png)
+<img src="assets/logo.png" alt="ConcreteDTO Logo" width="120" height="120">
 
 # ConcreteDTO
 
