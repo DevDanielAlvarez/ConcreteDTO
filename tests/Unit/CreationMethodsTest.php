@@ -3,11 +3,13 @@
 use Alvarez\ConcreteDto\AbstractDTO;
 use Alvarez\ConcreteDto\Contracts\DTOFrom;
 use Alvarez\ConcreteDto\Contracts\IsDTO;
+use PharIo\Manifest\Email;
 
 class UserDTO extends AbstractDTO
 {
     public function __construct(
-        public readonly string $name
+        public readonly string $name,
+        public null|string $email = null
     ) {
     }
 }
@@ -42,4 +44,17 @@ it('can from any type', function () {
     $anotherDTO = new AnotherDTO(fullName: 'Daniel Alvarez');
     $userDTO = UserDTO::from(conversor: new ConvertAnotherDTOInUserDTO(), dataToConvert: $anotherDTO);
     expect($userDTO->name)->toBe('Daniel');
+});
+
+it('can clone with different data', function () {
+
+    $userDTO = new UserDTO(name: 'Daniel Alvarez', email: 'alvarez@alvarez.com');
+
+    $newDTO = $userDTO->cloneWith(['email' => 'alva@alva.com']);
+
+    expect($newDTO)->toBeInstanceOf(UserDTO::class);
+
+    expect($newDTO->name)->toBe('Daniel Alvarez');
+    expect($newDTO->email)->toBe('alva@alva.com');
+
 });
