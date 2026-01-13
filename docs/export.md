@@ -2,6 +2,8 @@
 
 ConcreteDTO makes it easy to move DTO data into formats your application expects. Keep export logic explicit and testable by using the helpers below.
 
+Reach for these methods when you need HTTP responses, logs, queue payloads, or mapping into domain models.
+
 ## `toArray(): array`
 
 Returns a flat associative array based on the DTO constructor properties.
@@ -50,3 +52,5 @@ $model = $patient->to(PatientDTOToModel::class);
 ```
 
 By centralizing export rules, you avoid duplicated array casts scattered across the codebase and keep changes localized to your DTOs.
+
+Next: keep your data flows predictable with [Immutability](/immutability).

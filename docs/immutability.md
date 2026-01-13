@@ -2,6 +2,8 @@
 
 DTOs are easiest to reason about when they stay immutable. ConcreteDTO helps you create adjusted copies without mutating the original instance.
 
+Reach for these helpers when you want safe updates for queues, events, or retries without side effects.
+
 ## `cloneWith(array $fields): static`
 
 Create a new DTO instance by merging existing properties with the provided overrides.
@@ -32,3 +34,5 @@ $data = $updated->except(['birthday']);
 ```
 
 Combining `cloneWith()` and `except()` keeps DTO usage predictable, even as your data requirements evolve.
+
+> Tip: keep `cloneWith()` changes small—prefer creating a dedicated DTO for meaningfully different shapes.

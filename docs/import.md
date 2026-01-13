@@ -2,6 +2,8 @@
 
 ConcreteDTO offers three entry points for building DTOs from external data. Each method keeps the constructor as the single source of truth, so property definitions stay explicit.
 
+Use this page when you need to accept payloads from APIs, CLI args, or legacy objects without leaking framework models into your DTOs.
+
 ## `fromArray(array $data): static`
 
 Hydrate directly from associative arrays that match your constructor signature. Validation hooks can be added by overriding `validate()` in your DTO.
@@ -35,6 +37,8 @@ $user = UserDTO::fromJSON($json);
 ```
 
 If the JSON contains extra keys, only the ones that match your constructor parameters will be used.
+
+> Tip: keep JSON field names aligned with your constructor parameter names to avoid silent drops.
 
 ## `from(DTOFrom|string $conversor, mixed $dataToConvert): static`
 
@@ -73,3 +77,5 @@ $user = UserDTO::from(LegacyUserToDTO::class, $legacy);
 ```
 
 With these three methods you can accept arrays, JSON payloads, or domain objects without leaking framework models into your DTOs.
+
+Next: see how to emit data with [Exporting Data](/export).

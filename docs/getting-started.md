@@ -2,6 +2,11 @@
 
 This guide shows how to install ConcreteDTO, define your first DTO, and create instances from different inputs.
 
+You will:
+- Install the package
+- Declare a tiny DTO
+- Import data from arrays, JSON, or any custom object
+
 ## Install
 
 ```bash
@@ -30,7 +35,7 @@ final class PatientDTO extends AbstractDTO
 
 ## Create instances
 
-### From an array
+### From an array (fastest)
 
 ```php
 $patient = PatientDTO::fromArray([
@@ -82,3 +87,5 @@ $patient = PatientDTO::from(PatientRecordToDTO::class, $record);
 ## Export and update quickly
 
 Every DTO can be exported with `toArray()`, `toJson()`, or converted to another shape with `to(DTOTo::class)`. Use `cloneWith([...])` to keep immutability while changing selected fields.
+
+Next: dive into [Importing Data](/import) and [Exporting Data](/export).
