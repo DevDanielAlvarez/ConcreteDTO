@@ -7,7 +7,8 @@ use Alvarez\ConcreteDto\Contracts\IsDTO;
 class PatientDTO extends AbstractDTO
 {
     public function __construct(
-        public readonly string $email
+        public readonly string $email,
+        public string|null $birthday = null
     ) {
     }
 }
@@ -29,7 +30,7 @@ it('can converto a DTO to a JSON', function () {
     // convert this DTO in a JSON
     $json = $patientDTO->toJson();
     expect($json)->toBeJson();
-    expect($json)->toBe('{"email":"alvarez@alvarez.com"}');
+    expect($json)->toBe('{"email":"alvarez@alvarez.com","birthday":null}');
 });
 
 it('can convert a DTO to custom data type', function () {
@@ -54,4 +55,10 @@ it('can convert a DTO to custom data type', function () {
 
     expect($fakeModel)->toBeInstanceOf(FakeModel::class);
 
+});
+
+it('can return data except some fields', function () {
+    $patientDTO = new PatientDTO(email: 'alvarez@alvarez.com', birthday: '2000-01-01');
+
+    expect($patientDTO->except(['email']))->toBe(['birthday' => '2000-01-01']);
 });
