@@ -78,7 +78,12 @@ $user = UserDTO::from(LegacyUserToDTO::class, $legacy);
 
 ## Custom validation
 
-Override the `validate()` method to add custom validation logic that runs before DTO creation.
+Override the static `validate()` method to add custom validation logic. The method receives an array of data and should throw exceptions when validation fails.
+
+### When validation runs
+
+- **Automatically:** When using `fromArray()`, `fromJSON()`, or `cloneWith()`
+- **Manual:** Call `self::validate($this->toArray())` in your constructor for validation on direct instantiation
 
 ```php
 <?php
@@ -88,7 +93,9 @@ final class UserDTO extends AbstractDTO
     public function __construct(
         public readonly string $name,
         public readonly string $email,
-    ) {}
+    ) {
+        self::validate($this->toArray()); // Enables validation on `new UserDTO(...)`
+    }
 
     public static function validate(array $data): void
     {
@@ -102,7 +109,7 @@ final class UserDTO extends AbstractDTO
     }
 }
 
-// Validation runs automatically
+// Validation runs on import methods
 $user = UserDTO::fromArray([
     'name' => 'Daniel Alvarez',
     'email' => 'alvarez@alvarez.com',
@@ -110,9 +117,18 @@ $user = UserDTO::fromArray([
 
 $user = UserDTO::fromJSON('{"name":"A","email":"invalid"}');
 // ✗ Throws InvalidArgumentException
+
+// Also runs on direct instantiation (because of constructor call)
+$user = new UserDTO('A', 'invalid');
+// ✗ Throws InvalidArgumentException
 ```
 
-Validation applies to `fromArray()`, `fromJSON()`, and `cloneWith()` methods.
+### Validation best practices
+
+- Keep validation logic simple and focused on data integrity
+- Throw descriptive exceptions with clear error messages
+- Use the `validate()` method for data structure validation, not business logic
+- Call `self::validate($this->toArray())` in constructor only if you need validation on direct instantiation
 
 With these three methods you can accept arrays, JSON payloads, or domain objects without leaking framework models into your DTOs.
 

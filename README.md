@@ -120,25 +120,38 @@ $updated = $user->cloneWith(['email' => 'new@example.com']);
 
 ### Validation
 
+Override the static `validate()` method to add custom validation logic. Validation runs automatically when using `fromArray()`, `fromJSON()`, or `cloneWith()`.
+
+For validation on direct instantiation with `new`, call `self::validate($this->toArray())` in your constructor.
+
 ```php
 final class UserDTO extends AbstractDTO
 {
     public function __construct(
         public readonly string $name,
         public readonly string $email,
-    ) {}
+    ) {
+        self::validate($this->toArray()); // Enable validation on direct instantiation
+    }
 
     public static function validate(array $data): void
     {
         if (!filter_var($data['email'] ?? '', FILTER_VALIDATE_EMAIL)) {
             throw new InvalidArgumentException('Invalid email format');
         }
+        
+        if (strlen($data['name'] ?? '') < 2) {
+            throw new InvalidArgumentException('Name too short');
+        }
     }
 }
 
-// Validation runs automatically on import
+// Validation runs automatically
 $user = UserDTO::fromArray(['name' => 'Daniel', 'email' => 'invalid']);
 // Throws InvalidArgumentException
+
+$user = new UserDTO('A', 'invalid@email');
+// Also throws InvalidArgumentException because validate is called in constructor
 ```
 
 ## API Reference

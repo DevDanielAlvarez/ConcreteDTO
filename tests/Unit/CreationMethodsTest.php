@@ -58,3 +58,21 @@ it('can clone with different data', function () {
     expect($newDTO->email)->toBe('alva@alva.com');
 
 });
+
+it('can validate data', function () {
+    class CarDTO extends AbstractDTO
+    {
+        public function __construct(public string $name)
+        {
+            self::validate($this->toArray());
+        }
+        public static function validate(array $data): void
+        {
+            if ($data['name'] != 'alvarez') {
+                throw new \Exception('The value of name field is not alvarez');
+            }
+        }
+
+    };
+    new CarDTO(name: 'daniel');
+})->throws(\Exception::class, 'The value of name field is not alvarez');

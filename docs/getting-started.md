@@ -118,7 +118,11 @@ $publicData = $user->except(['email']);
 
 ## Validation
 
-Add custom validation by overriding the `validate()` method:
+Add custom validation by overriding the static `validate()` method. This method receives an array of the data being validated.
+
+**Automatic validation:** The `validate()` method is called automatically when using `fromArray()`, `fromJSON()`, or `cloneWith()`.
+
+**Constructor validation:** To also validate when using `new UserDTO(...)`, call `self::validate($this->toArray())` in your constructor.
 
 ```php
 final class UserDTO extends AbstractDTO
@@ -126,17 +130,26 @@ final class UserDTO extends AbstractDTO
     public function __construct(
         public readonly string $name,
         public readonly string $email,
-    ) {}
+    ) {
+        self::validate($this->toArray()); // Validates on direct instantiation
+    }
 
     public static function validate(array $data): void
     {
         if (!filter_var($data['email'] ?? '', FILTER_VALIDATE_EMAIL)) {
             throw new InvalidArgumentException('Invalid email');
         }
+        
+        if (strlen($data['name'] ?? '') < 2) {
+            throw new InvalidArgumentException('Name too short');
+        }
     }
 }
-```
 
-Validation runs automatically when using `fromArray()`, `fromJSON()`, or `cloneWith()`.
+// All these trigger validation:
+UserDTO::fromArray(['name' => 'Daniel', 'email' => 'invalid']); // ✗ Throws
+new UserDTO('A', 'invalid'); // ✗ Throws
+$user->cloneWith(['email' => 'bad']); // ✗ Throws
+```
 
 Next: dive into [Importing Data](/import) and [Exporting Data](/export).
