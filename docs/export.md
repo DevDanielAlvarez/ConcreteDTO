@@ -11,12 +11,12 @@ Returns a flat associative array based on the DTO constructor properties.
 ```php
 <?php
 
-$user = new UserDTO(
+$userDTO = new UserDTO(
     name: 'Daniel Alvarez',
     email: 'alvarez@alvarez.com',
 );
 
-$array = $user->toArray();
+$array = $userDTO->toArray();
 // ['name' => 'Daniel Alvarez', 'email' => 'alvarez@alvarez.com']
 ```
 
@@ -25,7 +25,7 @@ $array = $user->toArray();
 Serializes the DTO to JSON. Useful for HTTP responses or logging.
 
 ```php
-$json = $user->toJson();
+$json = $userDTO->toJson();
 // {"name":"Daniel Alvarez","email":"alvarez@alvarez.com"}
 ```
 
@@ -47,8 +47,8 @@ final class UserDTOToModel implements DTOTo
     }
 }
 
-$user = new UserDTO(name: 'Daniel Alvarez', email: 'alvarez@alvarez.com');
-$model = $user->to(UserDTOToModel::class);
+$userDTO = new UserDTO(name: 'Daniel Alvarez', email: 'alvarez@alvarez.com');
+$model = $userDTO->to(UserDTOToModel::class);
 ```
 
 By centralizing export rules, you avoid duplicated array casts scattered across the codebase and keep changes localized to your DTOs.

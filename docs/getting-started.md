@@ -38,7 +38,7 @@ final class UserDTO extends AbstractDTO
 ### From an array (fastest)
 
 ```php
-$user = UserDTO::fromArray([
+$userDTO = UserDTO::fromArray([
     'name' => 'Daniel Alvarez',
     'email' => 'alvarez@alvarez.com',
 ]);
@@ -48,7 +48,7 @@ $user = UserDTO::fromArray([
 
 ```php
 $json = '{"name":"Daniel Alvarez","email":"alvarez@alvarez.com"}';
-$user = UserDTO::fromJSON($json);
+$userDTO = UserDTO::fromJSON($json);
 ```
 
 ### From any type with a converter
@@ -81,7 +81,7 @@ final class UserRequestToDTO implements DTOFrom
 }
 
 $request = new UserRequest('Daniel Alvarez', 'alvarez@alvarez.com');
-$user = UserDTO::from(UserRequestToDTO::class, $request);
+$userDTO = UserDTO::from(UserRequestToDTO::class, $request);
 ```
 
 ## Export and update quickly
@@ -91,28 +91,28 @@ Every DTO can be exported with `toArray()`, `toJson()`, or converted to another 
 ### Export to array
 
 ```php
-$data = $user->toArray();
+$data = $userDTO->toArray();
 // ['name' => 'Daniel Alvarez', 'email' => 'alvarez@alvarez.com']
 ```
 
 ### Export to JSON
 
 ```php
-$json = $user->toJson();
+$json = $userDTO->toJson();
 // {"name":"Daniel Alvarez","email":"alvarez@alvarez.com"}
 ```
 
 ### Update immutably
 
 ```php
-$updated = $user->cloneWith(['email' => 'new@example.com']);
-// Original $user remains unchanged
+$updated = $userDTO->cloneWith(['email' => 'new@example.com']);
+// Original $userDTO remains unchanged
 ```
 
 ### Filter fields
 
 ```php
-$publicData = $user->except(['email']);
+$publicData = $userDTO->except(['email']);
 // ['name' => 'Daniel Alvarez']
 ```
 
@@ -149,7 +149,7 @@ final class UserDTO extends AbstractDTO
 // All these trigger validation:
 UserDTO::fromArray(['name' => 'Daniel', 'email' => 'invalid']); // ✗ Throws
 new UserDTO('A', 'invalid'); // ✗ Throws
-$user->cloneWith(['email' => 'bad']); // ✗ Throws
+$userDTO->cloneWith(['email' => 'bad']); // ✗ Throws
 ```
 
 Next: dive into [Importing Data](/import) and [Exporting Data](/export).

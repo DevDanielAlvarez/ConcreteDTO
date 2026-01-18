@@ -21,7 +21,7 @@ final class UserDTO extends AbstractDTO
     ) {}
 }
 
-$user = UserDTO::fromArray([
+$userDTO = UserDTO::fromArray([
     'name' => 'Daniel Alvarez',
     'email' => 'alvarez@alvarez.com',
 ]);
@@ -33,7 +33,7 @@ Parse JSON into the same predictable constructor call.
 
 ```php
 $json = '{"name":"Daniel Alvarez","email":"alvarez@alvarez.com"}';
-$user = UserDTO::fromJSON($json);
+$userDTO = UserDTO::fromJSON($json);
 ```
 
 If the JSON contains extra keys, only the ones that match your constructor parameters will be used.
@@ -73,7 +73,7 @@ final class LegacyUserToDTO implements DTOFrom
 }
 
 $legacy = new LegacyUser('Daniel Alvarez', 'alvarez@alvarez.com');
-$user = UserDTO::from(LegacyUserToDTO::class, $legacy);
+$userDTO = UserDTO::from(LegacyUserToDTO::class, $legacy);
 ```
 
 ## Custom validation
@@ -110,16 +110,16 @@ final class UserDTO extends AbstractDTO
 }
 
 // Validation runs on import methods
-$user = UserDTO::fromArray([
+$userDTO = UserDTO::fromArray([
     'name' => 'Daniel Alvarez',
     'email' => 'alvarez@alvarez.com',
 ]); // ✓ Valid
 
-$user = UserDTO::fromJSON('{"name":"A","email":"invalid"}');
+$userDTO = UserDTO::fromJSON('{"name":"A","email":"invalid"}');
 // ✗ Throws InvalidArgumentException
 
 // Also runs on direct instantiation (because of constructor call)
-$user = new UserDTO('A', 'invalid');
+$userDTO = new UserDTO('A', 'invalid');
 // ✗ Throws InvalidArgumentException
 ```
 
