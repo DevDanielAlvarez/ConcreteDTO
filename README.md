@@ -227,7 +227,7 @@ Cache::put("user.{$user->name}", $cacheData);
 
 ## Documentation
 
-For in-depth guides, visit the full [documentation](https://github.com/DevDanielAlvarez/ConcreteDTO).
+For in-depth guides, visit the full [documentation](https://devdanielalvarez.github.io/ConcreteDTO/getting-started.html).
 
 Topics covered:
 - **Getting Started** - Installation and first DTO
